@@ -398,12 +398,15 @@ $('cancelScheduleEdit').onclick = () => {
 };
   async function loadBrandingAdmin(){if(!supabase||!isAdmin)return;await loadLogos();$('brandingGrid').innerHTML=teams.map(team=>`<div class="brand-edit"><img id="preview-${teamSlug(team)}" alt="${safe(team)} logo" src="${safe(teamLogo(team))}" onerror="this.style.visibility='hidden'"><h3>${safe(team)}</h3><div class="field"><label for="file-${teamSlug(team)}">Logo image (PNG, JPG, WebP)</label><input type="file" id="file-${teamSlug(team)}" accept="image/png,image/jpeg,image/webp"></div><button class="tiny" data-logo-save="${safe(team)}">Upload / replace logo</button> <button class="secondary tiny" data-logo-remove="${safe(team)}">Remove</button></div>`).join('');document.querySelectorAll('[data-logo-save]').forEach(b=>b.onclick=async()=>{const team=b.dataset.logoSave;const file=$('file-'+teamSlug(team)).files[0];if(!file){message('logoStatus',`Choose a logo file for ${team} first.`,true);return}if(!['image/png','image/jpeg','image/webp'].includes(file.type)){message('logoStatus','Use PNG, JPG or WebP.',true);return}if(file.size>3*1024*1024){message('logoStatus','Please choose an image smaller than 3 MB.',true);return}try{message('logoStatus',`Uploading ${team} logo…`);const path=`${teamSlug(team)}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;const {error:uploadError}=await supabase.storage.from('team-logos').upload(path,file,{upsert:true,contentType:file.type});if(uploadError)throw uploadError;const {data:pub}=supabase.storage.from('team-logos').getPublicUrl(path);const {error:dbError}=await supabase.from('team_branding').upsert({team,logo_url:pub.publicUrl,updated_at:new Date().toISOString()},{onConflict:'team'});if(dbError)throw dbError;logos[team]=pub.publicUrl;$('preview-'+teamSlug(team)).src=pub.publicUrl;$('preview-'+teamSlug(team)).style.visibility='visible';renderTeams();message('logoStatus',`${team} logo saved and visible on team cards.`)}catch(err){message('logoStatus','Logo upload failed: '+err.message,true)} });document.querySelectorAll('[data-logo-remove]').forEach(b=>b.onclick=async()=>{const team=b.dataset.logoRemove;if(!confirm(`Remove the saved logo for ${team}?`))return;const {error}=await supabase.from('team_branding').delete().eq('team',team);if(error){message('logoStatus','Could not remove logo: '+error.message,true);return}delete logos[team];await loadBrandingAdmin();renderTeams();message('logoStatus',`${team} logo reference removed.`)})}
   
+
+
 async function loadPublicSchedule() {
   const grid = $('scheduleGrid');
   if (!grid) return;
 
   if (!supabase) {
-    grid.innerHTML = '<p class="muted small">Schedule is currently unavailable.</p>';
+    grid.innerHTML =
+      '<p class="muted small">Schedule is currently unavailable.</p>';
     return;
   }
 
@@ -415,15 +418,16 @@ async function loadPublicSchedule() {
     .order('id');
 
   if (error) {
-    console.error('Could not load public schedule:', error.message);
-    grid.innerHTML = '<p class="muted small">Could not load the schedule. Please try again later.</p>';
+    grid.innerHTML =
+      '<p class="muted small">Could not load the schedule.</p>';
     return;
   }
 
   const rows = data || [];
 
   if (!rows.length) {
-    grid.innerHTML = '<p class="muted small">Schedule will be announced soon.</p>';
+    grid.innerHTML =
+      '<p class="muted small">Schedule will be announced soon.</p>';
     return;
   }
 
@@ -435,7 +439,6 @@ async function loadPublicSchedule() {
   ];
 
   const grouped = {};
-
   rows.forEach(item => {
     const day = Number(item.day_number);
     if (!grouped[day]) grouped[day] = [];
@@ -444,27 +447,106 @@ async function loadPublicSchedule() {
 
   grid.innerHTML = [1, 2, 3, 4].map(day => {
     const items = grouped[day] || [];
-
     if (!items.length) return '';
 
-    const contents = items.map(item => `
-      <div class="schedule-item">
-        ${item.session ? `<h4>${safe(item.session)}</h4>` : ''}
-        ${item.location ? `<p class="muted small">Location: ${safe(item.location)}</p>` : ''}
-        ${item.start_time ? `<p><strong>${safe(item.start_time)}</strong></p>` : ''}
-        ${item.activity ? `<p><strong>${safe(item.activity)}</strong></p>` : ''}
-        ${item.details ? `<p>${safe(item.details)}</p>` : ''}
-      </div>
-    `).join('');
+    let contents = '';
+
+    if (day !== 3) {
+      // Days 1, 2 and 4: group activities by location.
+      const locations = [];
+
+      items.forEach(item => {
+        const location = item.location || 'Location to be confirmed';
+        let group = locations.find(g => g.location === location);
+
+        if (!group) {
+          group = { location, items: [] };
+          locations.push(group);
+        }
+
+        group.items.push(item);
+      });
+
+      contents = locations.map(group => `
+        <div class="schedule-session">
+          <h3 class="schedule-location">
+            ${safe(group.location)}
+          </h3>
+          <div class="schedule-timeline">
+            ${group.items.map(item => `
+              <div class="schedule-item">
+                ${item.start_time
+                  ? `<div class="schedule-time">${safe(item.start_time)}</div>`
+                  : ''}
+                <div class="schedule-activity">
+                  ${safe(item.activity || '')}
+                </div>
+                ${item.details
+                  ? `<p class="schedule-details">${safe(item.details)}</p>`
+                  : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    } else {
+      // Day 3: separate morning and evening sessions.
+      const sessions = [];
+
+      items.forEach(item => {
+        const session = item.session || 'Other Activities';
+        const location = item.location || 'Location to be confirmed';
+        const key = `${session}|||${location}`;
+
+        let group = sessions.find(g => g.key === key);
+
+        if (!group) {
+          group = { key, session, location, items: [] };
+          sessions.push(group);
+        }
+
+        group.items.push(item);
+      });
+
+      contents = sessions.map(group => `
+        <div class="schedule-session">
+          <h3 class="schedule-session-title">
+            ${safe(group.session)}
+          </h3>
+          <p class="schedule-location">
+            ${safe(group.location)}
+          </p>
+          <div class="schedule-timeline">
+            ${group.items.map(item => `
+              <div class="schedule-item">
+                ${item.start_time
+                  ? `<div class="schedule-time">${safe(item.start_time)}</div>`
+                  : ''}
+                <div class="schedule-activity">
+                  ${safe(item.activity || '')}
+                </div>
+                ${item.details
+                  ? `<p class="schedule-details">${safe(item.details)}</p>`
+                  : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
 
     return `
       <article class="card schedule-card">
-        <span class="schedule-day">DAY ${day} · ${days[day - 1]}</span>
+        <span class="schedule-day">
+          DAY ${day} · ${days[day - 1]}
+        </span>
         ${contents}
       </article>
     `;
   }).join('');
 }
+
+
   async function refreshAll(){await loadLeaderboard();await loadRoster();if(isAdmin)await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin(),loadAdminSchedule()])}
 await Promise.all([
   loadLogos(),
