@@ -73,92 +73,10 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
   </div>
 
   <div id="scheduleGrid" class="grid">
+  <p class="muted small">Loading event schedule…</p>
+</div>
 
-    <article class="card schedule-card">
-      <span class="schedule-day">DAY 1 · WEDNESDAY, 14 APRIL 2027</span>
-      <h3>Opening Ceremony &amp; Team Draw</h3>
-      <p class="muted small">Location: DK 16 &amp; 17</p>
-      <ul>
-        <li><strong>7:30 PM</strong> — Students Registration</li>
-        <li><strong>8:00 PM</strong> — Opening Ceremony</li>
-        <li><strong>9:05 PM</strong> — Team and Match Draw</li>
-        <li><strong>10:00 PM</strong> — End of Event</li>
-      </ul>
-    </article>
-
-    <article class="card schedule-card">
-      <span class="schedule-day">DAY 2 · THURSDAY, 15 APRIL 2027</span>
-      <h3>Badminton</h3>
-      <p class="muted small">Location: Dewan Badminton Tengku Anis</p>
-      <ul>
-        <li><strong>7:30 PM</strong> — Players Registration</li>
-        <li><strong>8:00 PM</strong> — Badminton Match</li>
-      </ul>
-      <p>Events:</p>
-      <ul>
-        <li>Men's Doubles</li>
-        <li>Women's Doubles</li>
-        <li>Mixed Doubles</li>
-        <li><strong>1:00 AM</strong> — End of Match</li>
-      </ul>
-    </article>
-
-    <article class="card schedule-card">
-      <span class="schedule-day">DAY 3 · FRIDAY, 16 APRIL 2027</span>
-      <h3>Morning Session</h3>
-      <p class="muted small">Location: Mini Stadium Kijang Emas</p>
-      <ul>
-        <li><strong>7:30 AM</strong> — Players Registration</li>
-        <li><strong>7:50 AM</strong> — Track Event</li>
-      </ul>
-      <p>Track Events:</p>
-      <ul>
-        <li>100m Sprint — Men's &amp; Women's</li>
-        <li>200m Sprint — Men's &amp; Women's</li>
-        <li>4 × 100m Relay — Men's, Women's &amp; Mixed</li>
-      </ul>
-      <ul>
-        <li><strong>9:05 AM</strong> — Volleyball &amp; Netball Match</li>
-        <li><strong>12:45 PM</strong> — End of Match / Break</li>
-      </ul>
-
-      <hr>
-
-      <h3>Evening Session</h3>
-      <p class="muted small">Location: DK 15–19</p>
-      <ul>
-        <li><strong>4:40 PM</strong> — Players Registration</li>
-        <li><strong>5:15 PM</strong> — E-Sports &amp; Indoor Games</li>
-      </ul>
-      <p>Activities:</p>
-      <ul>
-        <li>Mobile Legends</li>
-        <li>PES</li>
-        <li>Ping Pong</li>
-        <li>Congkak</li>
-        <li>Darts</li>
-        <li><strong>7:45 PM</strong> — End of Match</li>
-      </ul>
-    </article>
-
-    <article class="card schedule-card">
-      <span class="schedule-day">DAY 4 · SATURDAY, 17 APRIL 2027</span>
-      <h3>Sports Day &amp; Closing Ceremony</h3>
-      <p class="muted small">Location: Stadium Hoki USM</p>
-      <ul>
-        <li><strong>7:00 AM</strong> — Students Registration</li>
-        <li><strong>7:30 AM</strong> — Aerobics</li>
-        <li><strong>8:10 AM</strong> — Tug of War</li>
-        <li><strong>10:20 AM</strong> — Relay Match (Sukaneka)</li>
-        <li><strong>Break</strong></li>
-        <li><strong>1:45 PM</strong> — Parade</li>
-        <li><strong>2:30 PM</strong> — Closing Ceremony</li>
-        <li><strong>5:40 PM</strong> — End of VETSPORT 2027</li>
-      </ul>
-    </article>
-
-  </div>
-
+  
   <p class="muted small">
     Tentative schedule. Activities and timings are subject to confirmation
     by the organising committee.
@@ -181,7 +99,7 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
       <div class="adminhead"><div><div class="overline">Committee workspace</div><h2 style="margin:4px 0">Admin dashboard</h2><p id="adminIdentity" class="muted small"></p></div><button id="logout" class="secondary">Sign out</button></div>
       <div class="notice">Changes are saved to the shared database. Database policies remain the final authority for what an administrator can change.</div>
       <div class="admin-tabs" role="tablist">
-        <button class="active" data-admin-tab="rosterAdmin">Roster</button><button data-admin-tab="resultsAdmin">Results</button><button data-admin-tab="brandingAdmin">Team branding</button>
+        <button class="active" data-admin-tab="rosterAdmin">Roster</button><button data-admin-tab="resultsAdmin">Results</button><button data-admin-tab="brandingAdmin">Team branding</button><button data-admin-tab="scheduleAdmin">Schedule</button>
       </div>
       <div id="rosterAdmin" class="admin-pane active">
         <div class="grid">
@@ -211,6 +129,80 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
         <div id="brandingGrid" class="brand-row"></div><p id="logoStatus" class="status" aria-live="polite"></p>
       </div>
     </div>
+    <div id="scheduleAdmin" class="admin-pane">
+  <h3>Manage event schedule</h3>
+  <p class="muted small">Add, edit and remove schedule entries.</p>
+
+  <div class="brand-edit">
+    <form id="scheduleForm">
+      <input type="hidden" id="scheduleEditId">
+
+      <div class="field">
+        <label for="scheduleDay">Day</label>
+        <select id="scheduleDay" required>
+          <option value="1">Day 1</option>
+          <option value="2">Day 2</option>
+          <option value="3">Day 3</option>
+          <option value="4">Day 4</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="scheduleDate">Date</label>
+        <input id="scheduleDate" type="date" required>
+      </div>
+
+      <div class="field">
+        <label for="scheduleSession">Session</label>
+        <input id="scheduleSession" type="text"
+          placeholder="e.g. Morning Session">
+      </div>
+
+      <div class="field">
+        <label for="scheduleTime">Time</label>
+        <input id="scheduleTime" type="text"
+          placeholder="e.g. 7:30 AM">
+      </div>
+
+      <div class="field">
+        <label for="scheduleActivity">Activity</label>
+        <input id="scheduleActivity" type="text" required
+          placeholder="e.g. Players Registration">
+      </div>
+
+      <div class="field">
+        <label for="scheduleLocation">Location</label>
+        <input id="scheduleLocation" type="text"
+          placeholder="e.g. DK 16 & 17">
+      </div>
+
+      <div class="field">
+        <label for="scheduleDetails">Details</label>
+        <textarea id="scheduleDetails"
+          placeholder="Optional notes or event details"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="scheduleOrder">Display order</label>
+        <input id="scheduleOrder" type="number" value="0" required>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Save schedule entry</button>
+        <button type="button" id="cancelScheduleEdit"
+          class="secondary">Cancel edit</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="brand-edit">
+    <h3>Saved schedule entries</h3>
+    <div id="adminScheduleList">
+      <p class="muted small">Schedule entries will appear here.</p>
+    </div>
+    <p id="scheduleStatus" class="muted small"></p>
+  </div>
+</div>
   </section>
 </main>
 <footer class="footer">VETSPORT 2027 · FPV UMK · Shared tournament information</footer>
@@ -249,7 +241,7 @@ $('loginForm').onsubmit=async e=>{e.preventDefault();if(!supabase){message('auth
 $('resetPassword').onclick=async()=>{const email=$('email').value.trim();if(!email){message('authMessage','Enter your email address first.',true);return}if(!supabase){message('authMessage','Supabase is not configured.',true);return}const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:location.href.split('#')[0]});message('authMessage',error?'Unable to send reset email: '+error.message:'If this address has an account, a reset email has been sent.',!!error)};
 async function checkAdmin(){if(!supabase||!currentUser)return false;const {data,error}=await supabase.from('admins').select('user_id').eq('user_id',currentUser.id).maybeSingle();isAdmin=!!data&&!error;return isAdmin}
 $('logout').onclick=async()=>{if(supabase)await supabase.auth.signOut();currentUser=null;isAdmin=false;$('adminPanel').classList.add('hidden');message('authMessage','You have signed out.')};
-if(supabase){supabase.auth.getSession().then(async({data})=>{if(data.session){currentUser=data.session.user;await checkAdmin();if(isAdmin){$('adminPanel').classList.remove('hidden');$('adminIdentity').textContent=currentUser.email;await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin()])}}});supabase.auth.onAuthStateChange((_event,session)=>{if(!session){currentUser=null;isAdmin=false;$('adminPanel').classList.add('hidden')}})}
+if(supabase){supabase.auth.getSession().then(async({data})=>{if(data.session){currentUser=data.session.user;await checkAdmin();if(isAdmin){$('adminPanel').classList.remove('hidden');$('adminIdentity').textContent=currentUser.email;await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin(),loadAdminSchedule()])}}});supabase.auth.onAuthStateChange((_event,session)=>{if(!session){currentUser=null;isAdmin=false;$('adminPanel').classList.add('hidden')}})}
 async function loadLogos(){if(!supabase)return;const {data,error}=await supabase.from('team_branding').select('team,logo_url');if(error){console.warn('Team branding not configured yet:',error.message);return}logos=Object.fromEntries((data||[]).map(r=>[r.team,r.logo_url]));renderTeams()}
 function renderLeaderboard(data){const totals=Object.fromEntries(teams.map(t=>[t,0]));(data||[]).forEach(r=>{if(totals[r.team]!==undefined)totals[r.team]+=Number(r.points)||0});const sorted=teams.map(team=>({team,points:totals[team]})).sort((a,b)=>b.points-a.points);$('leaderSummary').textContent=sorted[0]?.points>0?sorted[0].team:'Awaiting results';$('eventCount').textContent=String((data||[]).length);$('podium').innerHTML=sorted.slice(0,3).map((r,i)=>`<div class="podium-card"><div class="podium-rank">${['01 · LEADER','02 · RUNNER-UP','03 · THIRD'][i]}</div><div class="podium-team">${safe(r.team)}</div><div class="podium-points">${r.points}<span class="muted small"> pts</span></div></div>`).join('');$('leaderboardTable').innerHTML=`<table><thead><tr><th>Rank</th><th>Team</th><th>Total points</th></tr></thead><tbody>${sorted.map((r,i)=>`<tr><td class="rank">${i+1}</td><td>${safe(r.team)}</td><td class="points">${r.points}</td></tr>`).join('')}</tbody></table>`}
 let allResults=[];
@@ -261,8 +253,151 @@ async function loadAdminRoster(){if(!supabase||!isAdmin)return;const {data,error
 async function loadAdminResults(){if(!supabase||!isAdmin)return;const {data,error}=await supabase.from('event_results').select('sport,team,placement,points').order('sport').order('placement');if(error){$('adminResultsTable').innerHTML=`<span class="error">${safe(error.message)}</span>`;return}if(!data?.length){$('adminResultsTable').textContent='No saved results yet.';return}$('adminResultsTable').innerHTML=`<div class="tablewrap"><table><thead><tr><th>Sport</th><th>Team</th><th>Place / points</th><th>Actions</th></tr></thead><tbody>${data.map(r=>`<tr><td>${safe(r.sport)}</td><td>${safe(r.team)}</td><td>${safe(r.placement)} / ${safe(r.points)}</td><td><div class="result-row-actions"><button class="secondary tiny" data-result-edit="${safe(r.sport)}" data-team="${safe(r.team)}" data-place="${safe(r.placement)}">Edit</button><button class="danger tiny" data-result-delete="${safe(r.sport)}" data-team="${safe(r.team)}">Delete</button></div></td></tr>`).join('')}</tbody></table></div>`;document.querySelectorAll('[data-result-edit]').forEach(b=>b.onclick=()=>{$('scoreSport').value=b.dataset.resultEdit;$('scoreTeam').value=b.dataset.team;$('scorePlace').value=b.dataset.place;document.querySelector('[data-admin-tab="resultsAdmin"]').click();$('scoreForm').scrollIntoView({behavior:'smooth',block:'center'});message('logoStatus','Result loaded into the form. Change the placement and click Save result to update it.')});document.querySelectorAll('[data-result-delete]').forEach(b=>b.onclick=async()=>{if(!confirm(`Delete ${b.dataset.team} result for ${b.dataset.resultDelete}? This will recalculate the leaderboard.`))return;const {error}=await supabase.from('event_results').delete().eq('sport',b.dataset.resultDelete).eq('team',b.dataset.team);if(error){alert('Delete failed: '+error.message);return}await refreshAll()})}
 $('rosterForm').onsubmit=async e=>{e.preventDefault();if(!supabase||!isAdmin){alert('Administrator access required.');return}const row={sport:$('adminSport').value,team:$('adminTeam').value,name:$('athleteName').value.trim(),role:$('athleteRole').value.trim()||null};const {error}=await supabase.from('athletes').insert(row);if(error){alert('Could not add athlete: '+error.message);return}$('athleteName').value='';$('athleteRole').value='';await loadAdminRoster();await loadRoster();alert('Athlete added.')};
 $('scoreForm').onsubmit=async e=>{e.preventDefault();if(!supabase||!isAdmin){alert('Administrator access required.');return}const placement=Number($('scorePlace').value);const row={sport:$('scoreSport').value,team:$('scoreTeam').value,placement,points:pointsByPlace[placement]};const {error}=await supabase.from('event_results').upsert(row,{onConflict:'sport,team'});if(error){alert('Could not save result: '+error.message);return}await refreshAll();alert('Result saved and leaderboard updated.')};
-async function loadBrandingAdmin(){if(!supabase||!isAdmin)return;await loadLogos();$('brandingGrid').innerHTML=teams.map(team=>`<div class="brand-edit"><img id="preview-${teamSlug(team)}" alt="${safe(team)} logo" src="${safe(teamLogo(team))}" onerror="this.style.visibility='hidden'"><h3>${safe(team)}</h3><div class="field"><label for="file-${teamSlug(team)}">Logo image (PNG, JPG, WebP)</label><input type="file" id="file-${teamSlug(team)}" accept="image/png,image/jpeg,image/webp"></div><button class="tiny" data-logo-save="${safe(team)}">Upload / replace logo</button> <button class="secondary tiny" data-logo-remove="${safe(team)}">Remove</button></div>`).join('');document.querySelectorAll('[data-logo-save]').forEach(b=>b.onclick=async()=>{const team=b.dataset.logoSave;const file=$('file-'+teamSlug(team)).files[0];if(!file){message('logoStatus',`Choose a logo file for ${team} first.`,true);return}if(!['image/png','image/jpeg','image/webp'].includes(file.type)){message('logoStatus','Use PNG, JPG or WebP.',true);return}if(file.size>3*1024*1024){message('logoStatus','Please choose an image smaller than 3 MB.',true);return}try{message('logoStatus',`Uploading ${team} logo…`);const path=`${teamSlug(team)}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;const {error:uploadError}=await supabase.storage.from('team-logos').upload(path,file,{upsert:true,contentType:file.type});if(uploadError)throw uploadError;const {data:pub}=supabase.storage.from('team-logos').getPublicUrl(path);const {error:dbError}=await supabase.from('team_branding').upsert({team,logo_url:pub.publicUrl,updated_at:new Date().toISOString()},{onConflict:'team'});if(dbError)throw dbError;logos[team]=pub.publicUrl;$('preview-'+teamSlug(team)).src=pub.publicUrl;$('preview-'+teamSlug(team)).style.visibility='visible';renderTeams();message('logoStatus',`${team} logo saved and visible on team cards.`)}catch(err){message('logoStatus','Logo upload failed: '+err.message,true)} });document.querySelectorAll('[data-logo-remove]').forEach(b=>b.onclick=async()=>{const team=b.dataset.logoRemove;if(!confirm(`Remove the saved logo for ${team}?`))return;const {error}=await supabase.from('team_branding').delete().eq('team',team);if(error){message('logoStatus','Could not remove logo: '+error.message,true);return}delete logos[team];await loadBrandingAdmin();renderTeams();message('logoStatus',`${team} logo reference removed.`)})}
-async function refreshAll(){await loadLeaderboard();await loadRoster();if(isAdmin)await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin()])}
+async function loadAdminSchedule() {
+  if (!supabase || !isAdmin) return;
+
+  const list = $('adminScheduleList');
+  const { data, error } = await supabase
+    .from('schedule_items')
+    .select('*')
+    .order('day_number')
+    .order('sort_order')
+    .order('id');
+
+  if (error) {
+    message('scheduleStatus', 'Could not load schedule: ' + error.message, true);
+    return;
+  }
+
+  const rows = data || [];
+
+  if (!rows.length) {
+    list.innerHTML = '<p class="muted small">No schedule entries yet.</p>';
+    return;
+  }
+
+  list.innerHTML = rows.map(item => `
+    <div class="brand-edit">
+      <h3>Day ${item.day_number}: ${safe(item.activity || '')}</h3>
+      <p class="muted small">
+        ${safe(item.event_date || '')}
+        ${safe(item.start_time || '')}
+        ${safe(item.session || '')}
+        ${safe(item.location || '')}
+      </p>
+      <p>${safe(item.details || '')}</p>
+      <button type="button" data-schedule-edit="${item.id}">Edit</button>
+      <button type="button" class="secondary"
+        data-schedule-delete="${item.id}">Delete</button>
+    </div>
+  `).join('');
+
+  list.querySelectorAll('[data-schedule-edit]').forEach(button => {
+    button.onclick = () => {
+      const item = rows.find(row => String(row.id) === button.dataset.scheduleEdit);
+      if (!item) return;
+
+      $('scheduleEditId').value = item.id;
+      $('scheduleDay').value = item.day_number;
+      $('scheduleDate').value = item.event_date || '';
+      $('scheduleSession').value = item.session || '';
+      $('scheduleTime').value = item.start_time || '';
+      $('scheduleActivity').value = item.activity || '';
+      $('scheduleLocation').value = item.location || '';
+      $('scheduleDetails').value = item.details || '';
+      $('scheduleOrder').value = item.sort_order ?? 0;
+
+      $('scheduleForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+  });
+
+  list.querySelectorAll('[data-schedule-delete]').forEach(button => {
+    button.onclick = async () => {
+      const item = rows.find(row => String(row.id) === button.dataset.scheduleDelete);
+      if (!item || !confirm(`Delete "${item.activity}" from the schedule?`)) return;
+
+      const { error: deleteError } = await supabase
+        .from('schedule_items')
+        .delete()
+        .eq('id', item.id);
+
+      if (deleteError) {
+        message('scheduleStatus', 'Could not delete entry: ' + deleteError.message, true);
+        return;
+      }
+
+      message('scheduleStatus', 'Schedule entry deleted.');
+      await loadAdminSchedule();
+    };
+  });
+}
+  $('scheduleForm').onsubmit = async e => {
+  e.preventDefault();
+
+  if (!supabase || !isAdmin) {
+    message('scheduleStatus', 'Administrator access required.', true);
+    return;
+  }
+
+  const editId = $('scheduleEditId').value;
+
+  const row = {
+    day_number: Number($('scheduleDay').value),
+    event_date: $('scheduleDate').value,
+    session: $('scheduleSession').value.trim(),
+    start_time: $('scheduleTime').value.trim(),
+    activity: $('scheduleActivity').value.trim(),
+    location: $('scheduleLocation').value.trim(),
+    details: $('scheduleDetails').value.trim(),
+    sort_order: Number($('scheduleOrder').value) || 0
+  };
+
+  if (!row.activity || !row.event_date) {
+    message('scheduleStatus', 'Please enter the date and activity.', true);
+    return;
+  }
+
+  const saveButton = $('scheduleForm').querySelector('[type="submit"]');
+  saveButton.disabled = true;
+
+  try {
+    let result;
+
+    if (editId) {
+      result = await supabase
+        .from('schedule_items')
+        .update(row)
+        .eq('id', editId);
+    } else {
+      result = await supabase
+        .from('schedule_items')
+        .insert(row);
+    }
+
+    if (result.error) throw result.error;
+
+    $('scheduleForm').reset();
+    $('scheduleEditId').value = '';
+    $('scheduleOrder').value = '0';
+
+    message('scheduleStatus', editId ? 'Schedule entry updated.' : 'Schedule entry saved.');
+
+    await loadAdminSchedule();
+  } catch (err) {
+    message('scheduleStatus', 'Could not save schedule: ' + err.message, true);
+  } finally {
+    saveButton.disabled = false;
+  }
+};
+
+$('cancelScheduleEdit').onclick = () => {
+  $('scheduleForm').reset();
+  $('scheduleEditId').value = '';
+  $('scheduleOrder').value = '0';
+  message('scheduleStatus', 'Edit cancelled.');
+};
+  async function loadBrandingAdmin(){if(!supabase||!isAdmin)return;await loadLogos();$('brandingGrid').innerHTML=teams.map(team=>`<div class="brand-edit"><img id="preview-${teamSlug(team)}" alt="${safe(team)} logo" src="${safe(teamLogo(team))}" onerror="this.style.visibility='hidden'"><h3>${safe(team)}</h3><div class="field"><label for="file-${teamSlug(team)}">Logo image (PNG, JPG, WebP)</label><input type="file" id="file-${teamSlug(team)}" accept="image/png,image/jpeg,image/webp"></div><button class="tiny" data-logo-save="${safe(team)}">Upload / replace logo</button> <button class="secondary tiny" data-logo-remove="${safe(team)}">Remove</button></div>`).join('');document.querySelectorAll('[data-logo-save]').forEach(b=>b.onclick=async()=>{const team=b.dataset.logoSave;const file=$('file-'+teamSlug(team)).files[0];if(!file){message('logoStatus',`Choose a logo file for ${team} first.`,true);return}if(!['image/png','image/jpeg','image/webp'].includes(file.type)){message('logoStatus','Use PNG, JPG or WebP.',true);return}if(file.size>3*1024*1024){message('logoStatus','Please choose an image smaller than 3 MB.',true);return}try{message('logoStatus',`Uploading ${team} logo…`);const path=`${teamSlug(team)}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;const {error:uploadError}=await supabase.storage.from('team-logos').upload(path,file,{upsert:true,contentType:file.type});if(uploadError)throw uploadError;const {data:pub}=supabase.storage.from('team-logos').getPublicUrl(path);const {error:dbError}=await supabase.from('team_branding').upsert({team,logo_url:pub.publicUrl,updated_at:new Date().toISOString()},{onConflict:'team'});if(dbError)throw dbError;logos[team]=pub.publicUrl;$('preview-'+teamSlug(team)).src=pub.publicUrl;$('preview-'+teamSlug(team)).style.visibility='visible';renderTeams();message('logoStatus',`${team} logo saved and visible on team cards.`)}catch(err){message('logoStatus','Logo upload failed: '+err.message,true)} });document.querySelectorAll('[data-logo-remove]').forEach(b=>b.onclick=async()=>{const team=b.dataset.logoRemove;if(!confirm(`Remove the saved logo for ${team}?`))return;const {error}=await supabase.from('team_branding').delete().eq('team',team);if(error){message('logoStatus','Could not remove logo: '+error.message,true);return}delete logos[team];await loadBrandingAdmin();renderTeams();message('logoStatus',`${team} logo reference removed.`)})}
+async function refreshAll(){await loadLeaderboard();await loadRoster();if(isAdmin)await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin(),loadAdminSchedule()])}
 await Promise.all([loadLogos(),loadLeaderboard(),loadRoster()]);
 </script>
 </body></html>
