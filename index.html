@@ -14,20 +14,24 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
   #scheduleGrid{align-items:stretch}
 
 /* Schedule visual improvements */
+
+/* Schedule visual improvements */
 .schedule-session {
   padding: 12px 0;
 }
 
 .schedule-session + .schedule-session {
-  margin-top: 20px;
+  margin-top: 22px;
   padding-top: 22px;
-  border-top: 1px solid #38516b;
+  border-top: 2px solid #38516b;
 }
 
 .schedule-session-title {
-  margin: 0 0 10px;
-  padding-left: 10px;
-  border-left: 3px solid #c7f36b;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-left: 4px solid #c7f36b;
+  border-radius: 0 8px 8px 0;
+  background: #192c40;
   color: #c7f36b;
   font-size: 15px;
   font-weight: 800;
@@ -35,7 +39,12 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
 }
 
 .schedule-location {
-  margin: 8px 0 12px;
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 7px 11px;
+  border: 1px solid #38516b;
+  border-radius: 8px;
+  background: #102a42;
   color: #8ed9ff;
   font-size: 13px;
   font-weight: 700;
@@ -49,6 +58,7 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
 .schedule-timeline {
   margin-top: 8px;
 }
+
 
 .schedule-item {
   padding: 5px 0;
