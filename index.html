@@ -583,7 +583,7 @@ $('resetPassword').onclick=async()=>{const email=$('email').value.trim();if(!ema
 async function checkAdmin(){if(!supabase||!currentUser)return false;const {data,error}=await supabase.from('admins').select('user_id').eq('user_id',currentUser.id).maybeSingle();isAdmin=!!data&&!error;return isAdmin}
 $('logout').onclick=async()=>{if(supabase)await supabase.auth.signOut();currentUser=null;isAdmin=false;$('adminPanel').classList.add('hidden');message('authMessage','You have signed out.')};
 if(supabase){supabase.auth.getSession().then(async({data})=>{if(data.session){currentUser=data.session.user;await checkAdmin();if(isAdmin){$('adminPanel').classList.remove('hidden');$('adminIdentity').textContent=currentUser.email;await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin(),loadAdminSchedule(),loadAdminSponsors()])}}});supabase.auth.onAuthStateChange((_event,session)=>{if(!session){currentUser=null;isAdmin=false;$('adminPanel').classList.add('hidden')}})}
-async function loadLogos(){if(!supabase)return;const {data,error}=await supabase.from('team_branding').select('team,logo_url');if(error){console.warn('Team branding not configured yet:',error.message);return}logos=Object.fromEntries((data||[]).map(r=>[r.team,r.logo_url]));renderTeams()}
+async function loadLogos(){if(!supabase)return;const {data,error}=await supabase.from('team_branding').select('team,logo_url');if(error){console.warn('Team branding not configured yet:',error.message);return}logos=Object.fromEntries((data||[]).map(r=>[r.team,r.logo_url]));renderTeams();renderLeaderboard(allResults)}
 function displayTeamName(team) {
   const names = {
     'DVM 1': 'DVM 1 - Xerus',
