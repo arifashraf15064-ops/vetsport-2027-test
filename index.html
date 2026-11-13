@@ -602,6 +602,30 @@ main>section.grid[aria-label="Event summary"]>.stat:nth-child(3){--stat-accent:#
   #schedule #scheduleGrid > .schedule-card{min-height:0;padding:18px 16px}
 }
 
+
+/* Medal standings: live totals derived from event_results placement */
+#podium .podium-card{
+  grid-template-areas:"rank rank" "logo team" "logo medals" "logo points";
+}
+#podium .podium-medal-summary{grid-area:medals;min-width:0}
+#podium .leader-medals{display:flex;flex-wrap:wrap;gap:7px;font-size:12px;font-weight:800}
+.leader-medals span{white-space:nowrap}
+.gold-medal{color:#fbbf24!important}
+.silver-medal{color:#cbd5e1!important}
+.bronze-medal{color:#fb923c!important}
+#leaderboardTable .medal-leaderboard{min-width:650px;width:100%;border-collapse:collapse}
+#leaderboardTable .medal-leaderboard th,
+#leaderboardTable .medal-leaderboard td{padding:11px 12px;text-align:center;white-space:nowrap}
+#leaderboardTable .medal-leaderboard th:nth-child(2),
+#leaderboardTable .medal-leaderboard td:nth-child(2){text-align:left}
+#leaderboardTable .medal-count{font-weight:850;font-variant-numeric:tabular-nums}
+#leaderboardTable .medal-leaderboard td.points{font-weight:900;color:#f8fafc}
+@media(max-width:600px){
+  #leaderboardTable .medal-leaderboard{min-width:610px}
+  #leaderboardTable .medal-leaderboard th,
+  #leaderboardTable .medal-leaderboard td{padding:9px 8px;font-size:12px}
+}
+
 </style>
 </head>
 <body>
@@ -888,10 +912,17 @@ function displayTeamName(team) {
   
 function renderLeaderboard(data){
   const totals=Object.fromEntries(teams.map(t=>[t,0]));
+  const medals=Object.fromEntries(teams.map(t=>[t,{gold:0,silver:0,bronze:0}]));
   (data||[]).forEach(r=>{
-    if(totals[r.team]!==undefined)totals[r.team]+=Number(r.points)||0
+    if(totals[r.team]!==undefined){
+      totals[r.team]+=Number(r.points)||0;
+      const place=Number(r.placement);
+      if(place===1)medals[r.team].gold++;
+      else if(place===2)medals[r.team].silver++;
+      else if(place===3)medals[r.team].bronze++;
+    }
   });
-  const sorted=teams.map(team=>({team,points:totals[team]}))
+  const sorted=teams.map(team=>({team,points:totals[team],...medals[team]}))
     .sort((a,b)=>b.points-a.points);
 
   const teamLogo=team=>{
@@ -900,6 +931,11 @@ function renderLeaderboard(data){
       ? `<img class="leader-team-logo" src="${safe(url)}" alt="${safe(displayTeamName(team))} logo">`
       : '';
   };
+  const medalSummary=r=>`<div class="leader-medals" aria-label="${r.gold} gold, ${r.silver} silver, ${r.bronze} bronze">
+    <span class="gold-medal">🥇 ${r.gold}</span>
+    <span class="silver-medal">🥈 ${r.silver}</span>
+    <span class="bronze-medal">🥉 ${r.bronze}</span>
+  </div>`;
 
   $('leaderSummary').textContent=
     sorted[0]?.points>0?displayTeamName(sorted[0].team):'Awaiting results';
@@ -910,21 +946,25 @@ function renderLeaderboard(data){
       <div class="podium-rank">${['01 · LEADER','02 · RUNNER-UP','03 · THIRD'][i]}</div>
       ${teamLogo(r.team)}
       <div class="podium-team">${safe(displayTeamName(r.team))}</div>
+      <div class="podium-medal-summary">${medalSummary(r)}</div>
       <div class="podium-points">${r.points}<span class="muted small"> pts</span></div>
     </div>
   `).join('');
 
   $('leaderboardTable').innerHTML=`
-    <table>
-      <thead><tr><th>Rank</th><th>Team</th><th>Total points</th></tr></thead>
+    <div class="tablewrap"><table class="medal-leaderboard">
+      <thead><tr><th>Rank</th><th>Team</th><th>🥇 Gold</th><th>🥈 Silver</th><th>🥉 Bronze</th><th>Total points</th></tr></thead>
       <tbody>${sorted.map((r,i)=>`
         <tr>
           <td class="rank">${i+1}</td>
           <td class="leader-team-cell">${teamLogo(r.team)}<span>${safe(displayTeamName(r.team))}</span></td>
+          <td class="medal-count gold-medal">${r.gold}</td>
+          <td class="medal-count silver-medal">${r.silver}</td>
+          <td class="medal-count bronze-medal">${r.bronze}</td>
           <td class="points">${r.points}</td>
         </tr>
       `).join('')}</tbody>
-    </table>`;
+    </table></div>`;
 }
 
 let allResults=[];
