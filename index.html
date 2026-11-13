@@ -158,6 +158,172 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
 #sponsors{display:none!important}
 #schedule:target,
 #sponsors:target{display:block!important}
+
+/* VETSPORT Game On — pixel stadium visual theme */
+:root{
+  --lime:#a3e635;
+  --lime2:#d9f99d;
+  --cyan:#22d3ee;
+  --magenta:#ec4899;
+  --panel:rgba(15,23,42,.85);
+  --line:rgba(100,116,139,.55);
+}
+html{background:#080c18}
+body{
+  background:radial-gradient(circle at 50% 35%,rgba(10,16,30,.35) 0%,rgba(8,12,24,.72) 100%),url('pixel-bg.jpg.jpg') center center / cover no-repeat fixed;
+  background-color:#080c18;
+  color:#f8fafc;
+}
+main{background:transparent}
+main>section:not(.hero){background:transparent}
+header{
+  background:rgba(10,15,28,.88);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(34,211,238,.28);
+  box-shadow:0 5px 24px rgba(0,0,0,.28);
+}
+.nav a{border:1px solid transparent;transition:background .2s,border-color .2s,box-shadow .2s,color .2s}
+.nav a:hover,.nav a.active{
+  color:#d9f99d;
+  background:rgba(34,211,238,.10);
+  border-color:rgba(34,211,238,.65);
+  box-shadow:0 0 12px rgba(34,211,238,.22),inset 0 0 10px rgba(34,211,238,.08);
+}
+#loginOpen{background:rgba(15,23,42,.82);color:#f8fafc;border:1px solid rgba(148,163,184,.5);box-shadow:0 0 12px rgba(34,211,238,.10)}
+#loginOpen:hover{border-color:var(--cyan);box-shadow:0 0 16px rgba(34,211,238,.24)}
+
+/* Hero: glass panel, neon gradient frame and arcade HUD corners */
+#overview.hero{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border:1px solid transparent;
+  background:linear-gradient(rgba(14,22,38,.86),rgba(14,22,38,.86)) padding-box,linear-gradient(105deg,#22d3ee 0%,#60a5fa 48%,#ec4899 100%) border-box;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 0 14px rgba(34,211,238,.22),0 0 30px rgba(236,72,153,.15),inset 0 0 28px rgba(34,211,238,.035);
+}
+#overview.hero::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  inset:10px;
+  pointer-events:none;
+  background:
+    linear-gradient(#22d3ee,#22d3ee) left top/30px 2px no-repeat,
+    linear-gradient(#22d3ee,#22d3ee) left top/2px 30px no-repeat,
+    linear-gradient(#22d3ee,#22d3ee) left bottom/30px 2px no-repeat,
+    linear-gradient(#22d3ee,#22d3ee) left bottom/2px 30px no-repeat,
+    linear-gradient(#ec4899,#ec4899) right top/30px 2px no-repeat,
+    linear-gradient(#ec4899,#ec4899) right top/2px 30px no-repeat,
+    linear-gradient(#ec4899,#ec4899) right bottom/30px 2px no-repeat,
+    linear-gradient(#ec4899,#ec4899) right bottom/2px 30px no-repeat;
+  filter:drop-shadow(0 0 4px rgba(34,211,238,.8));
+}
+#overview.hero>*{position:relative;z-index:1}
+#overview.hero h1{color:#fff;text-shadow:0 0 18px rgba(255,255,255,.10)}
+#overview.hero h1 span{color:#a3e635;text-shadow:0 0 16px rgba(163,230,53,.48)}
+#overview .chip{background:rgba(8,20,36,.76);border-color:rgba(34,211,238,.55);box-shadow:0 0 8px rgba(34,211,238,.12)}
+#overview .chip:last-child{border-color:rgba(236,72,153,.75);box-shadow:0 0 10px rgba(236,72,153,.18)}
+
+/* Three neon-accented event summary cards */
+main>section.grid[aria-label="Event summary"]{background:transparent;gap:14px}
+main>section.grid[aria-label="Event summary"]>.stat{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:rgba(15,23,42,.85);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--stat-accent);
+  box-shadow:0 0 16px var(--stat-glow),inset 0 0 20px var(--stat-inner);
+}
+main>section.grid[aria-label="Event summary"]>.stat::before{
+  content:"";
+  position:absolute;
+  inset:7px;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    linear-gradient(var(--stat-accent),var(--stat-accent)) left top/18px 2px no-repeat,
+    linear-gradient(var(--stat-accent),var(--stat-accent)) left top/2px 18px no-repeat,
+    linear-gradient(var(--stat-accent),var(--stat-accent)) right top/18px 2px no-repeat,
+    linear-gradient(var(--stat-accent),var(--stat-accent)) right top/2px 18px no-repeat,
+    linear-gradient(var(--stat-accent),var(--stat-accent)) left bottom/18px 2px no-repeat,
+    linear-gradient(var(--stat-accent),var(--stat-accent)) left bottom/2px 18px no-repeat,
+    linear-gradient(var(--stat-accent),var(--stat-accent)) right bottom/18px 2px no-repeat,
+    linear-gradient(var(--stat-accent),var(--stat-accent)) right bottom/2px 18px no-repeat;
+  opacity:.72;
+}
+main>section.grid[aria-label="Event summary"]>.stat:nth-child(1){--stat-accent:#22d3ee;--stat-glow:rgba(34,211,238,.22);--stat-inner:rgba(34,211,238,.055)}
+main>section.grid[aria-label="Event summary"]>.stat:nth-child(2){--stat-accent:#4ade80;--stat-glow:rgba(34,197,94,.22);--stat-inner:rgba(34,197,94,.055)}
+main>section.grid[aria-label="Event summary"]>.stat:nth-child(3){--stat-accent:#f472b6;--stat-glow:rgba(251,146,60,.20);--stat-inner:rgba(244,114,182,.055)}
+
+/* Overall leaderboard glass frame */
+#leaderboard{
+  position:relative;
+  padding:clamp(14px,2.2vw,24px);
+  border:1px solid transparent;
+  border-radius:24px;
+  background:linear-gradient(rgba(13,20,35,.88),rgba(13,20,35,.88)) padding-box,linear-gradient(105deg,#22d3ee 0%,#60a5fa 48%,#ec4899 100%) border-box;
+  backdrop-filter:blur(9px);
+  -webkit-backdrop-filter:blur(9px);
+  box-shadow:0 0 18px rgba(34,211,238,.17),0 0 30px rgba(236,72,153,.10),inset 0 0 24px rgba(34,211,238,.035);
+}
+#leaderboard .sectionhead{align-items:center}
+#leaderboard .sectionhead h2{color:#f8fafc}
+#leaderboard .tag{border-color:rgba(34,211,238,.45);background:rgba(8,20,36,.72);box-shadow:0 0 10px rgba(34,211,238,.12)}
+
+/* Podium: horizontal logo + team details */
+#podium{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#podium .podium-card{
+  display:grid;
+  grid-template-columns:64px minmax(0,1fr);
+  grid-template-areas:"rank rank" "logo team" "logo points";
+  align-items:center;
+  justify-items:start;
+  column-gap:13px;
+  row-gap:5px;
+  text-align:left;
+  min-width:0;
+  padding:16px;
+  background:rgba(15,23,42,.82);
+  border:1px solid #64748b;
+  box-shadow:inset 0 0 18px rgba(148,163,184,.035);
+}
+#podium .podium-card:nth-child(1){border-color:#84cc16;background:linear-gradient(120deg,rgba(132,204,22,.12),rgba(15,23,42,.88));box-shadow:0 0 15px rgba(132,204,22,.15),inset 0 0 20px rgba(132,204,22,.07)}
+#podium .podium-card:nth-child(2){border-color:#64748b;box-shadow:0 0 12px rgba(148,163,184,.10)}
+#podium .podium-card:nth-child(3){border-color:#d97706;background:linear-gradient(120deg,rgba(217,119,6,.10),rgba(15,23,42,.88));box-shadow:0 0 13px rgba(245,158,11,.13)}
+#podium .podium-rank{grid-area:rank}
+#podium .leader-team-logo{grid-area:logo;width:58px;height:58px;margin:0;border-radius:50%;border:1px solid rgba(226,232,240,.55);background:rgba(241,245,249,.96);padding:5px;object-fit:contain}
+#podium .podium-team{grid-area:team;margin:0;overflow-wrap:anywhere;font-size:clamp(12px,1.2vw,16px)}
+#podium .podium-points{grid-area:points;font-size:24px;line-height:1.1}
+#podium .podium-card:not(:has(.leader-team-logo)){grid-template-columns:1fr}
+#podium .podium-card:not(:has(.leader-team-logo)) .podium-team{grid-column:1/-1}
+
+/* Leaderboard table: cyan header and translucent rows */
+#leaderboardTable{border-color:rgba(34,211,238,.62);box-shadow:0 0 13px rgba(34,211,238,.12);background:rgba(8,16,30,.54)}
+#leaderboardTable table{background:transparent}
+#leaderboardTable th{background:rgba(8,39,58,.94);color:#b9f4ff;border-bottom:1px solid rgba(34,211,238,.55);box-shadow:inset 0 -1px rgba(34,211,238,.15)}
+#leaderboardTable td{background:rgba(8,18,33,.58);border-bottom:1px solid rgba(100,116,139,.35)}
+#leaderboardTable tbody tr:hover td{background:rgba(20,48,67,.78)}
+#leaderboardTable .leader-team-logo{width:36px;height:36px;border-radius:50%;background:rgba(241,245,249,.96);border:1px solid rgba(226,232,240,.5);padding:4px}
+
+/* Keep every other section and all existing interactive panels intact */
+#scoring,#sports,#schedule,#sponsors{background:transparent}
+@media(max-width:820px){
+  #podium .podium-card{padding:12px;grid-template-columns:48px minmax(0,1fr);column-gap:9px}
+  #podium .leader-team-logo{width:44px;height:44px}
+}
+@media(max-width:520px){
+  body{background-attachment:scroll}
+  #podium{grid-template-columns:1fr}
+  #podium .podium-card{grid-template-columns:52px minmax(0,1fr);padding:13px}
+  #podium .leader-team-logo{width:46px;height:46px}
+  #leaderboard{padding:13px}
+  #overview.hero{padding:26px 18px}
+}
 </style>
 </head>
 <body>
