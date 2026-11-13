@@ -110,6 +110,33 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
   line-height: 1.5;
 }
 
+
+/* Sponsors section */
+.sponsor-tier{margin-top:22px}
+.sponsor-tier-heading{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.sponsor-tier-heading h3{margin:0;font-size:20px}
+.sponsor-tier-badge{display:inline-flex;align-items:center;border-radius:999px;padding:6px 11px;font-size:10px;font-weight:950;letter-spacing:.13em}
+.diamond-badge{color:#e9f6ff;background:#29445b;border:1px solid #8fd5ff;box-shadow:0 0 18px #70caff35}
+.platinum-badge{color:#e7eaf0;background:#303b4b;border:1px solid #aebbd0}
+.sponsor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.sponsor-grid-diamond{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.sponsor-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:22px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#14283d,#0d1b2b);min-width:0}
+.sponsor-card-diamond{padding:30px 22px;border-color:#79c9f4;background:radial-gradient(ellipse at 50% 0%,#25445b 0%,transparent 70%),linear-gradient(145deg,#172d43,#0d1b2b);box-shadow:0 0 24px #65c8ff18}
+.sponsor-logo{width:104px;height:104px;object-fit:contain;border-radius:14px;background:#f7f8fa;padding:9px}
+.sponsor-card-diamond .sponsor-logo{width:136px;height:136px}
+.sponsor-card h4{margin:0;font-size:18px;overflow-wrap:anywhere}
+.sponsor-description{margin:0;color:var(--muted);font-size:13px}
+.sponsor-link{font-size:13px;font-weight:800;text-decoration:none}
+.sponsor-link:hover{text-decoration:underline}
+.sponsor-empty{grid-column:1/-1}
+.sponsor-admin-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.sponsor-admin-item:last-child{border-bottom:0}
+.sponsor-admin-item img{width:54px;height:54px;object-fit:contain;background:#f7f8fa;border-radius:9px;padding:5px;flex-shrink:0}
+.sponsor-admin-info{flex:1;min-width:0}
+.sponsor-admin-info strong{display:block;overflow-wrap:anywhere}
+.sponsor-admin-actions{display:flex;gap:6px;flex-wrap:wrap}
+@media(max-width:520px){.sponsor-card-diamond .sponsor-logo{width:112px;height:112px}.sponsor-grid-diamond{grid-template-columns:1fr}.sponsor-admin-item{align-items:flex-start;flex-wrap:wrap}}
+
 </style>
 </head>
 <body>
@@ -118,7 +145,7 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
   <div><div class="brand">VETSPORT <span style="color:var(--lime)">2027</span></div><div class="sub">FPV UMK · INTER-BATCH SPORTS</div></div>
   <div class="grow"></div>
   <nav class="nav" aria-label="Main navigation">
-    <a href="#overview">Overview</a><a href="#leaderboard">Leaderboard</a><a href="#scoring">Scoring Sheet</a><a href="#sports">Sports &amp; Rosters</a><a href="#schedule">Schedule</a>
+    <a href="#overview">Overview</a><a href="#leaderboard">Leaderboard</a><a href="#scoring">Scoring Sheet</a><a href="#sports">Sports &amp; Rosters</a><a href="#schedule">Schedule</a><a href="#sponsors">Sponsors</a>
   </nav>
   <button id="loginOpen" class="secondary">Admin login</button>
 </header>
@@ -181,6 +208,17 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
   </p>
 </section>
 
+  <section id="sponsors" class="section">
+    <div class="sectionhead"><div><div class="overline">Our partners</div><h2>VETSPORT 2027 Sponsors</h2><p>Thank you to the organisations supporting our tournament.</p></div></div>
+    <div class="sponsor-tier sponsor-tier-diamond">
+      <div class="sponsor-tier-heading"><span class="sponsor-tier-badge diamond-badge">DIAMOND TIER</span><h3>Diamond Sponsors</h3></div>
+      <div id="diamondSponsors" class="sponsor-grid sponsor-grid-diamond"><div class="empty">Official sponsors to be announced.</div></div>
+    </div>
+    <div class="sponsor-tier sponsor-tier-platinum">
+      <div class="sponsor-tier-heading"><span class="sponsor-tier-badge platinum-badge">PLATINUM TIER</span><h3>Platinum Sponsors</h3></div>
+      <div id="platinumSponsors" class="sponsor-grid"><div class="empty">Official sponsors to be announced.</div></div>
+    </div>
+  </section>
 
   <section id="loginPanel" class="card loginbox hidden">
     <div class="adminhead"><div><h2 style="margin:0">Administrator login</h2><p class="muted small">For authorised committee accounts only.</p></div><button id="loginClose" class="secondary">Close</button></div>
@@ -197,7 +235,7 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
       <div class="adminhead"><div><div class="overline">Committee workspace</div><h2 style="margin:4px 0">Admin dashboard</h2><p id="adminIdentity" class="muted small"></p></div><button id="logout" class="secondary">Sign out</button></div>
       <div class="notice">Changes are saved to the shared database. Database policies remain the final authority for what an administrator can change.</div>
       <div class="admin-tabs" role="tablist">
-        <button class="active" data-admin-tab="rosterAdmin">Roster</button><button data-admin-tab="resultsAdmin">Results</button><button data-admin-tab="brandingAdmin">Team branding</button><button data-admin-tab="scheduleAdmin">Schedule</button>
+        <button class="active" data-admin-tab="rosterAdmin">Roster</button><button data-admin-tab="resultsAdmin">Results</button><button data-admin-tab="brandingAdmin">Team branding</button><button data-admin-tab="scheduleAdmin">Schedule</button><button data-admin-tab="sponsorsAdmin">Sponsors</button>
       </div>
       <div id="rosterAdmin" class="admin-pane active">
         <div class="grid">
@@ -301,6 +339,24 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
     <p id="scheduleStatus" class="muted small"></p>
   </div>
 </div>
+    <div id="sponsorsAdmin" class="admin-pane">
+      <h3>Manage Sponsors</h3><p class="muted small">Add Diamond or Platinum sponsors, upload their logos and optionally add a website or description.</p>
+      <div class="grid">
+        <div class="brand-edit">
+          <h3 id="sponsorFormHeading">Add sponsor</h3>
+          <form id="sponsorForm">
+            <input type="hidden" id="sponsorEditId"><input type="hidden" id="sponsorExistingLogo">
+            <div class="field"><label for="sponsorName">Sponsor name</label><input id="sponsorName" maxlength="120" required></div>
+            <div class="field"><label for="sponsorTier">Tier</label><select id="sponsorTier"><option value="Diamond">Diamond</option><option value="Platinum">Platinum</option></select></div>
+            <div class="field"><label for="sponsorLogo">Sponsor logo (PNG, JPG or WebP)</label><input id="sponsorLogo" type="file" accept="image/png,image/jpeg,image/webp"></div>
+            <div class="field"><label for="sponsorWebsite">Website URL (optional)</label><input id="sponsorWebsite" type="url" placeholder="https://example.com"></div>
+            <div class="field"><label for="sponsorDescription">Short description (optional)</label><textarea id="sponsorDescription" maxlength="300" rows="3"></textarea></div>
+            <div class="actions"><button type="submit">Save sponsor</button><button type="button" id="cancelSponsorEdit" class="secondary">Clear</button></div>
+          </form><p id="sponsorStatus" class="status" aria-live="polite"></p>
+        </div>
+        <div class="brand-edit"><h3>Saved sponsors</h3><div id="adminSponsorsList"><p class="muted small">Loading sponsors…</p></div></div>
+      </div>
+    </div>
   </section>
 </main>
 <footer class="footer">VETSPORT 2027 · FPV UMK · Shared tournament information</footer>
@@ -335,11 +391,11 @@ document.querySelectorAll('.nav a').forEach(a=>a.addEventListener('click',()=>{d
 document.querySelectorAll('[data-admin-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-admin-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.admin-pane').forEach(p=>p.classList.toggle('active',p.id===b.dataset.adminTab));});
 $('loginOpen').onclick=()=>{$('loginPanel').classList.remove('hidden');$('loginPanel').scrollIntoView({behavior:'smooth',block:'center'})};
 $('loginClose').onclick=()=> $('loginPanel').classList.add('hidden');
-$('loginForm').onsubmit=async e=>{e.preventDefault();if(!supabase){message('authMessage','The publishable key has not been configured.',true);return}message('authMessage','Signing in…');const {data,error}=await supabase.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){message('authMessage',error.message,true);return}currentUser=data.user;await checkAdmin();if(!isAdmin){await supabase.auth.signOut();currentUser=null;message('authMessage','This account is not on the administrator allowlist.',true);return}$('loginPanel').classList.add('hidden');$('adminPanel').classList.remove('hidden');$('adminIdentity').textContent=currentUser.email;await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin()]);$('adminPanel').scrollIntoView({behavior:'smooth'})};
+$('loginForm').onsubmit=async e=>{e.preventDefault();if(!supabase){message('authMessage','The publishable key has not been configured.',true);return}message('authMessage','Signing in…');const {data,error}=await supabase.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){message('authMessage',error.message,true);return}currentUser=data.user;await checkAdmin();if(!isAdmin){await supabase.auth.signOut();currentUser=null;message('authMessage','This account is not on the administrator allowlist.',true);return}$('loginPanel').classList.add('hidden');$('adminPanel').classList.remove('hidden');$('adminIdentity').textContent=currentUser.email;await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin(),loadAdminSchedule(),loadAdminSponsors()]);$('adminPanel').scrollIntoView({behavior:'smooth'})};
 $('resetPassword').onclick=async()=>{const email=$('email').value.trim();if(!email){message('authMessage','Enter your email address first.',true);return}if(!supabase){message('authMessage','Supabase is not configured.',true);return}const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:location.href.split('#')[0]});message('authMessage',error?'Unable to send reset email: '+error.message:'If this address has an account, a reset email has been sent.',!!error)};
 async function checkAdmin(){if(!supabase||!currentUser)return false;const {data,error}=await supabase.from('admins').select('user_id').eq('user_id',currentUser.id).maybeSingle();isAdmin=!!data&&!error;return isAdmin}
 $('logout').onclick=async()=>{if(supabase)await supabase.auth.signOut();currentUser=null;isAdmin=false;$('adminPanel').classList.add('hidden');message('authMessage','You have signed out.')};
-if(supabase){supabase.auth.getSession().then(async({data})=>{if(data.session){currentUser=data.session.user;await checkAdmin();if(isAdmin){$('adminPanel').classList.remove('hidden');$('adminIdentity').textContent=currentUser.email;await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin(),loadAdminSchedule()])}}});supabase.auth.onAuthStateChange((_event,session)=>{if(!session){currentUser=null;isAdmin=false;$('adminPanel').classList.add('hidden')}})}
+if(supabase){supabase.auth.getSession().then(async({data})=>{if(data.session){currentUser=data.session.user;await checkAdmin();if(isAdmin){$('adminPanel').classList.remove('hidden');$('adminIdentity').textContent=currentUser.email;await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin(),loadAdminSchedule(),loadAdminSponsors()])}}});supabase.auth.onAuthStateChange((_event,session)=>{if(!session){currentUser=null;isAdmin=false;$('adminPanel').classList.add('hidden')}})}
 async function loadLogos(){if(!supabase)return;const {data,error}=await supabase.from('team_branding').select('team,logo_url');if(error){console.warn('Team branding not configured yet:',error.message);return}logos=Object.fromEntries((data||[]).map(r=>[r.team,r.logo_url]));renderTeams()}
 function displayTeamName(team) {
   const names = {
@@ -402,6 +458,109 @@ async function loadAdminRoster(){if(!supabase||!isAdmin)return;const {data,error
 async function loadAdminResults(){if(!supabase||!isAdmin)return;const {data,error}=await supabase.from('event_results').select('sport,team,placement,points').order('sport').order('placement');if(error){$('adminResultsTable').innerHTML=`<span class="error">${safe(error.message)}</span>`;return}if(!data?.length){$('adminResultsTable').textContent='No saved results yet.';return}$('adminResultsTable').innerHTML=`<div class="tablewrap"><table><thead><tr><th>Sport</th><th>Team</th><th>Place / points</th><th>Actions</th></tr></thead><tbody>${data.map(r=>`<tr><td>${safe(r.sport)}</td><td>${safe(r.team)}</td><td>${safe(r.placement)} / ${safe(r.points)}</td><td><div class="result-row-actions"><button class="secondary tiny" data-result-edit="${safe(r.sport)}" data-team="${safe(r.team)}" data-place="${safe(r.placement)}">Edit</button><button class="danger tiny" data-result-delete="${safe(r.sport)}" data-team="${safe(r.team)}">Delete</button></div></td></tr>`).join('')}</tbody></table></div>`;document.querySelectorAll('[data-result-edit]').forEach(b=>b.onclick=()=>{$('scoreSport').value=b.dataset.resultEdit;$('scoreTeam').value=b.dataset.team;$('scorePlace').value=b.dataset.place;document.querySelector('[data-admin-tab="resultsAdmin"]').click();$('scoreForm').scrollIntoView({behavior:'smooth',block:'center'});message('logoStatus','Result loaded into the form. Change the placement and click Save result to update it.')});document.querySelectorAll('[data-result-delete]').forEach(b=>b.onclick=async()=>{if(!confirm(`Delete ${b.dataset.team} result for ${b.dataset.resultDelete}? This will recalculate the leaderboard.`))return;const {error}=await supabase.from('event_results').delete().eq('sport',b.dataset.resultDelete).eq('team',b.dataset.team);if(error){alert('Delete failed: '+error.message);return}await refreshAll()})}
 $('rosterForm').onsubmit=async e=>{e.preventDefault();if(!supabase||!isAdmin){alert('Administrator access required.');return}const row={sport:$('adminSport').value,team:$('adminTeam').value,name:$('athleteName').value.trim(),role:$('athleteRole').value.trim()||null};const {error}=await supabase.from('athletes').insert(row);if(error){alert('Could not add athlete: '+error.message);return}$('athleteName').value='';$('athleteRole').value='';await loadAdminRoster();await loadRoster();alert('Athlete added.')};
 $('scoreForm').onsubmit=async e=>{e.preventDefault();if(!supabase||!isAdmin){alert('Administrator access required.');return}const placement=Number($('scorePlace').value);const row={sport:$('scoreSport').value,team:$('scoreTeam').value,placement,points:pointsByPlace[placement]};const {error}=await supabase.from('event_results').upsert(row,{onConflict:'sport,team'});if(error){alert('Could not save result: '+error.message);return}await refreshAll();alert('Result saved and leaderboard updated.')};
+
+function validSponsorUrl(value){
+  if(!value)return '';
+  try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)?url.href:''}
+  catch{return ''}
+}
+function renderSponsorCards(rows){
+  const render=(tier,target)=>{
+    const sponsors=(rows||[]).filter(s=>s.tier===tier);
+    $(target).innerHTML=sponsors.length?sponsors.map(s=>{
+      const link=validSponsorUrl(s.website_url);
+      return `<article class="sponsor-card ${tier==='Diamond'?'sponsor-card-diamond':''}">
+        ${s.logo_url?`<img class="sponsor-logo" src="${safe(s.logo_url)}" alt="${safe(s.name)} logo" loading="lazy">`:''}
+        <span class="sponsor-tier-badge ${tier==='Diamond'?'diamond-badge':'platinum-badge'}">${tier.toUpperCase()} SPONSOR</span>
+        <h4>${safe(s.name)}</h4>
+        ${s.description?`<p class="sponsor-description">${safe(s.description)}</p>`:''}
+        ${link?`<a class="sponsor-link" href="${safe(link)}" target="_blank" rel="noopener noreferrer">Visit website ↗</a>`:''}
+      </article>`;
+    }).join(''):'<div class="empty sponsor-empty">Official sponsors to be announced.</div>';
+  };
+  render('Diamond','diamondSponsors');
+  render('Platinum','platinumSponsors');
+}
+async function loadSponsors(){
+  if(!supabase){
+    $('diamondSponsors').innerHTML='<div class="empty sponsor-empty">Sponsors will be announced soon.</div>';
+    $('platinumSponsors').innerHTML='<div class="empty sponsor-empty">Sponsors will be announced soon.</div>';
+    return;
+  }
+  const {data,error}=await supabase.from('sponsors').select('id,name,tier,logo_url,website_url,description,created_at').order('created_at');
+  if(error){
+    console.warn('Sponsors could not be loaded:',error.message);
+    $('diamondSponsors').innerHTML='<div class="empty sponsor-empty">Sponsors will be announced soon.</div>';
+    $('platinumSponsors').innerHTML='<div class="empty sponsor-empty">Sponsors will be announced soon.</div>';
+    return;
+  }
+  renderSponsorCards(data||[]);
+}
+function resetSponsorForm(){
+  $('sponsorForm').reset();$('sponsorEditId').value='';$('sponsorExistingLogo').value='';
+  $('sponsorFormHeading').textContent='Add sponsor';
+  $('sponsorForm').querySelector('[type="submit"]').textContent='Save sponsor';
+}
+async function loadAdminSponsors(){
+  if(!supabase||!isAdmin)return;
+  const list=$('adminSponsorsList');
+  const {data,error}=await supabase.from('sponsors').select('*').order('created_at',{ascending:false});
+  if(error){list.innerHTML=`<p class="error">Could not load sponsors: ${safe(error.message)}</p>`;return}
+  const rows=data||[];
+  if(!rows.length){list.innerHTML='<p class="muted small">No sponsors added yet.</p>';return}
+  list.innerHTML=rows.map(s=>`<div class="sponsor-admin-item">
+    ${s.logo_url?`<img src="${safe(s.logo_url)}" alt="">`:''}
+    <div class="sponsor-admin-info"><strong>${safe(s.name)}</strong><span class="muted small">${safe(s.tier)} tier</span></div>
+    <div class="sponsor-admin-actions"><button type="button" class="tiny" data-sponsor-edit="${s.id}">Edit</button><button type="button" class="tiny danger" data-sponsor-delete="${s.id}">Delete</button></div>
+  </div>`).join('');
+  list.querySelectorAll('[data-sponsor-edit]').forEach(button=>button.onclick=()=>{
+    const sponsor=rows.find(row=>String(row.id)===button.dataset.sponsorEdit);if(!sponsor)return;
+    $('sponsorEditId').value=sponsor.id;$('sponsorExistingLogo').value=sponsor.logo_url||'';
+    $('sponsorName').value=sponsor.name||'';$('sponsorTier').value=sponsor.tier;
+    $('sponsorWebsite').value=sponsor.website_url||'';$('sponsorDescription').value=sponsor.description||'';
+    $('sponsorFormHeading').textContent='Edit sponsor';
+    $('sponsorForm').querySelector('[type="submit"]').textContent='Update sponsor';
+    $('sponsorForm').scrollIntoView({behavior:'smooth',block:'center'});
+  });
+  list.querySelectorAll('[data-sponsor-delete]').forEach(button=>button.onclick=async()=>{
+    const sponsor=rows.find(row=>String(row.id)===button.dataset.sponsorDelete);
+    if(!sponsor||!confirm(`Delete sponsor "${sponsor.name}"? This removes its listing but does not delete the stored logo file.`))return;
+    const {error:deleteError}=await supabase.from('sponsors').delete().eq('id',sponsor.id);
+    if(deleteError){message('sponsorStatus','Could not delete sponsor: '+deleteError.message,true);return}
+    message('sponsorStatus','Sponsor deleted.');
+    await Promise.all([loadAdminSponsors(),loadSponsors()]);
+  });
+}
+$('sponsorForm').onsubmit=async e=>{
+  e.preventDefault();
+  if(!supabase||!isAdmin){message('sponsorStatus','Administrator access required.',true);return}
+  const name=$('sponsorName').value.trim(),tier=$('sponsorTier').value,websiteInput=$('sponsorWebsite').value.trim();
+  const website_url=websiteInput?validSponsorUrl(websiteInput):null;
+  if(websiteInput&&!website_url){message('sponsorStatus','Enter a valid http:// or https:// website URL.',true);return}
+  const file=$('sponsorLogo').files[0];
+  if(file&&(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>3*1024*1024)){
+    message('sponsorStatus','Use a PNG, JPG or WebP image smaller than 3 MB.',true);return;
+  }
+  const saveButton=$('sponsorForm').querySelector('[type="submit"]');saveButton.disabled=true;
+  try{
+    let logo_url=$('sponsorExistingLogo').value||null;
+    if(file){
+      const path=`sponsors/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+      const {error:uploadError}=await supabase.storage.from('sponsor-logos').upload(path,file,{upsert:false,contentType:file.type});
+      if(uploadError)throw uploadError;
+      logo_url=supabase.storage.from('sponsor-logos').getPublicUrl(path).data.publicUrl;
+    }
+    const row={name,tier,logo_url,website_url,description:$('sponsorDescription').value.trim()||null};
+    const editId=$('sponsorEditId').value;
+    const result=editId?await supabase.from('sponsors').update(row).eq('id',editId):await supabase.from('sponsors').insert(row);
+    if(result.error)throw result.error;
+    resetSponsorForm();message('sponsorStatus',editId?'Sponsor updated.':'Sponsor added.');
+    await Promise.all([loadAdminSponsors(),loadSponsors()]);
+  }catch(err){message('sponsorStatus','Could not save sponsor: '+err.message,true)}
+  finally{saveButton.disabled=false}
+};
+$('cancelSponsorEdit').onclick=()=>{resetSponsorForm();message('sponsorStatus','Form cleared.')};
+
 async function loadAdminSchedule() {
   if (!supabase || !isAdmin) return;
 
@@ -696,12 +855,13 @@ async function loadPublicSchedule() {
 }
 
 
-  async function refreshAll(){await loadLeaderboard();await loadRoster();if(isAdmin)await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin(),loadAdminSchedule()])}
+  async function refreshAll(){await loadLeaderboard();await loadRoster();if(isAdmin)await Promise.all([loadAdminRoster(),loadAdminResults(),loadBrandingAdmin(),loadAdminSchedule(),loadAdminSponsors()])}
 await Promise.all([
   loadLogos(),
   loadLeaderboard(),
   loadRoster(),
-  loadPublicSchedule()
+  loadPublicSchedule(),
+  loadSponsors()
 ]);
 </script>
 </body></html>
