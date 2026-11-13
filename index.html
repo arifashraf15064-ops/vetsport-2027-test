@@ -111,15 +111,6 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
 }
 
 
-/* Main navigation: show one page section at a time */
-main > #overview,
-main > #leaderboard,
-main > #scoring,
-main > #sports,
-main > #schedule,
-main > #sponsors{display:none!important}
-main:not(:has(> section:target)) > #overview{display:block!important}
-main > section:target{display:block!important}
 /* Schedule dedicated page view */
 main:has(#schedule:target)>section:not(#schedule){display:none!important}
 #schedule:target{min-height:calc(100vh - 110px);padding-top:30px}
