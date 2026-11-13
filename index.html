@@ -700,6 +700,7 @@ main>section.grid[aria-label="Event summary"]>.stat:nth-child(3){--stat-accent:#
   #overview .chips{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 }
 
+.footer-social{display:flex;flex-direction:column;align-items:center;gap:9px;margin-top:17px}.footer-social p{margin:0;color:#cbd5e1;font-size:13px;font-weight:750}.footer-social a{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid rgba(236,72,153,.65);border-radius:13px;color:#fff;background:linear-gradient(145deg,#833ab4,#fd1d1d 58%,#fcb045);box-shadow:0 0 16px rgba(236,72,153,.22);transition:transform .18s ease,box-shadow .18s ease}.footer-social a:hover{transform:translateY(-2px);box-shadow:0 0 22px rgba(236,72,153,.42)}.footer-social svg{width:24px;height:24px}
 </style>
 </head>
 <body>
@@ -965,7 +966,15 @@ main>section.grid[aria-label="Event summary"]>.stat:nth-child(3){--stat-accent:#
     </div>
   </section>
 </main>
-<footer class="footer">VETSPORT 2027 · FPV UMK · Shared tournament information</footer>
+<footer class="footer">
+  <div>VETSPORT 2027 · FPV UMK · Shared tournament information</div>
+  <div class="footer-social">
+    <p>Follow us on our social media</p>
+    <a href="https://www.instagram.com/vetsport26/" target="_blank" rel="noopener noreferrer" aria-label="Visit VETSPORT UMK on Instagram">
+      <svg viewBox="0 0 24 24" role="img" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.25" fill="currentColor"/></svg>
+    </a>
+  </div>
+</footer>
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
