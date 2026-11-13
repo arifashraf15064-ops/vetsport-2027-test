@@ -626,12 +626,18 @@ main>section.grid[aria-label="Event summary"]>.stat:nth-child(3){--stat-accent:#
   #leaderboardTable .medal-leaderboard td{padding:9px 8px;font-size:12px}
 }
 
+
+/* Sports & Rosters: compact dropdown selector matching the Scoring Sheet */
+#sports .sport-selector{max-width:420px;margin:0 0 16px}
+#sports .sport-selector select{width:100%}
+#sports .team-sub:empty{display:none}
+
 </style>
 </head>
 <body>
 <header>
   <img class="brandmark" src="vetsport-logo.png.jpeg" alt="VETSPORT Game On logo">
-  <div><div class="brand">VETSPORT <span style="color:var(--lime)">2027</span></div><div class="sub">FPV UMK · INTER-BATCH SPORTS</div></div>
+  <div><div class="brand">VETSPORT <span style="color:var(--lime)">2027</span></div></div>
   <div class="grow"></div>
   <nav class="nav" aria-label="Main navigation">
     <a href="#overview">Overview</a><a href="#leaderboard">Leaderboard</a><a href="#scoring">Scoring Sheet</a><a href="#sports">Sports &amp; Rosters</a><a href="#schedule">Schedule</a><a href="#sponsors">Sponsors</a>
@@ -659,7 +665,7 @@ main>section.grid[aria-label="Event summary"]>.stat:nth-child(3){--stat-accent:#
   </section>
 
   <section id="scoring" class="section">
-    <div class="sectionhead"><div><div class="overline">Official results</div><h2>Scoring sheet</h2><p>Browse published results by sport. Administrators can edit or remove entries after signing in.</p></div></div>
+    <div class="sectionhead"><div><div class="overline">Official results</div><h2>Scoring sheet</h2></div></div>
     <div class="card">
       <div class="field"><label for="scoringSportFilter">Select sport / event</label><select id="scoringSportFilter"></select></div>
       <div id="scoringTable" class="tablewrap"><div class="empty">Loading results…</div></div>
@@ -668,7 +674,7 @@ main>section.grid[aria-label="Event summary"]>.stat:nth-child(3){--stat-accent:#
 
   <section id="sports" class="section">
     <div class="sectionhead"><div><div class="overline">Meet the teams</div><h2>Sports &amp; rosters</h2><p>Choose a sport, then select a team to view its athlete roster.</p></div></div>
-    <div id="sportTabs" class="tabs" aria-label="Select sport"></div>
+    <div class="field sport-selector"><label for="rosterSportFilter">Select sport / event</label><select id="rosterSportFilter" aria-label="Select sport or event"></select></div>
     <div id="teamCards" class="team-grid"></div>
     <div class="card section">
       <div class="rosterhead"><img id="selectedTeamLogo" class="team-logo" alt="Selected team logo"><div><div class="overline" id="rosterSportLabel">Selected sport</div><h2 id="rosterTitle" style="margin:3px 0">DVM 1</h2><div class="muted small" id="rosterMeta">Athlete roster</div></div></div>
@@ -883,11 +889,12 @@ function options(id,items){$(id).innerHTML=items.map(v=>`<option value="${safe(v
 function makeTabs(id,items,active,handler){$(id).innerHTML='';items.forEach(v=>{const b=document.createElement('button');b.textContent=v;b.className=v===active?'active':'';b.onclick=()=>handler(v);$(id).appendChild(b)})}
 function configured(){return SUPABASE_URL.startsWith('https://') && SUPABASE_ANON_KEY.startsWith('sb_publishable_')}
 if(configured()){supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY); }else{ $('authMessage').textContent='Configuration needed: paste your existing sb_publishable_ key into index.html.'; }
-[ ['adminSport',sports],['scoreSport',sports],['scoringSportFilter',sports],['adminTeam',teams],['scoreTeam',teams] ].forEach(([id,items])=>options(id,items));
+[ ['adminSport',sports],['scoreSport',sports],['scoringSportFilter',sports],['rosterSportFilter',sports],['adminTeam',teams],['scoreTeam',teams] ].forEach(([id,items])=>options(id,items));
 function teamLogo(team){return logos[team]||''}
-function teamCard(team){const src=teamLogo(team);return `<button class="team-card ${team===selectedTeam?'active':''}" data-team="${safe(team)}"><img class="team-logo" alt="" src="${safe(src)}" onerror="this.style.visibility='hidden'"><span><span class="team-name">${safe(team)}</span><br><span class="team-sub">${team==='Staff'?'Faculty & staff':'DVM batch'}</span></span></button>`}
+function teamCard(team){const src=teamLogo(team);return `<button class="team-card ${team===selectedTeam?'active':''}" data-team="${safe(team)}"><img class="team-logo" alt="" src="${safe(src)}" onerror="this.style.visibility='hidden'"><span><span class="team-name">${safe(team)}</span><br><span class="team-sub">${team==='Staff'?'Lecturer & Staff':''}</span></span></button>`}
 function renderTeams(){ $('teamCards').innerHTML=teams.map(teamCard).join('');document.querySelectorAll('[data-team]').forEach(b=>b.onclick=async()=>{selectedTeam=b.dataset.team;renderTeams();await loadRoster()});$('rosterTitle').textContent=selectedTeam;$('selectedTeamLogo').src=teamLogo(selectedTeam);$('selectedTeamLogo').style.visibility=teamLogo(selectedTeam)?'visible':'hidden';$('rosterSportLabel').textContent=selectedSport;$('rosterMeta').textContent=`${selectedTeam} · ${selectedSport}` }
-function renderSports(){makeTabs('sportTabs',sports,selectedSport,async sport=>{selectedSport=sport;renderSports();renderTeams();await loadRoster()});$('scoringSportFilter').value=selectedSport;$('adminSport').value=selectedSport;$('scoreSport').value=selectedSport;renderTeams()}
+function renderSports(){$('rosterSportFilter').value=selectedSport;$('scoringSportFilter').value=selectedSport;$('adminSport').value=selectedSport;$('scoreSport').value=selectedSport;renderTeams()}
+$('rosterSportFilter').onchange=async()=>{selectedSport=$('rosterSportFilter').value;renderSports();renderTeams();await loadRoster()}
 renderSports();
 document.querySelectorAll('.nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active')}));
 document.querySelectorAll('[data-admin-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-admin-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.admin-pane').forEach(p=>p.classList.toggle('active',p.id===b.dataset.adminTab));});
