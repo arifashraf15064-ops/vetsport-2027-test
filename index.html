@@ -678,6 +678,32 @@ main>section.grid[aria-label="Event summary"]>.stat:nth-child(3){--stat-accent:#
 .chip-emoji{display:inline-block;margin-right:6px;font-size:1.05em;line-height:1}
 .hero .chips{padding:7px 9px;border-radius:18px;background:rgba(5,12,25,.28);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
 .hero{background:linear-gradient(rgba(14,22,38,.48),rgba(14,22,38,.48)) padding-box,linear-gradient(105deg,#22d3ee 0%,#60a5fa 48%,#ec4899 100%) border-box}
+
+/* iPhone / narrow-screen hero tuning: keep desktop look without the bright mobile wash */
+@media(max-width:768px){
+  #overview.hero{
+    background:linear-gradient(rgba(8,15,29,.64),rgba(8,15,29,.64)) padding-box,linear-gradient(105deg,#22d3ee 0%,#60a5fa 48%,#ec4899 100%) border-box!important;
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+  }
+  #overview .hero-title-lockup{padding:clamp(8px,2vw,14px) 0!important;margin-bottom:14px}
+  #overview .hero-title-lockup h1{
+    font-size:clamp(40px,11.8vw,50px)!important;
+    line-height:1.02!important;
+    letter-spacing:-.06em!important;
+    white-space:nowrap;
+  }
+  #overview .hero-title-lockup .eyebrow{
+    font-size:clamp(11px,3.4vw,15px)!important;
+    letter-spacing:.035em!important;
+  }
+  #overview .chips{
+    background:rgba(5,12,25,.42)!important;
+    backdrop-filter:blur(2px);
+    -webkit-backdrop-filter:blur(2px);
+  }
+}
+
 </style>
 </head>
 <body>
