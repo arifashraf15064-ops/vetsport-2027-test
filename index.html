@@ -77,6 +77,28 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
   font-weight: 700;
   letter-spacing: 0.02em;
 }
+.schedule-location-link{
+  text-decoration:none;
+  color:inherit;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease,background .18s ease;
+}
+.schedule-location-link:hover,
+.schedule-location-link:focus-visible{
+  border-color:#22d3ee;
+  box-shadow:0 0 12px rgba(34,211,238,.35);
+  transform:translateY(-1px);
+  outline:none;
+  background:#12314a;
+}
+.schedule-location-link .map-arrow{
+  color:#a5f3fc;
+  font-size:12px;
+  line-height:1;
+}
 
 .schedule-location::before {
   content: "📍 ";
@@ -612,6 +634,19 @@ const sports = ['Badminton Beregu','Badminton Beregu Campuran','Volleyball','Net
 const pointsByPlace = {1:50,2:40,3:30,4:15,5:10,6:5};
 const $ = id => document.getElementById(id);
 const safe = v => String(v ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const scheduleVenueUrls = {
+  'DK 16 & 17':'https://www.google.com/maps/search/?api=1&query=Faculty+of+Veterinary+Medicine+Universiti+Malaysia+Kelantan+Pengkalan+Chepa',
+  'Dewan Badminton Tengku Anis':'https://www.google.com/maps/search/?api=1&query=Dewan+Badminton+Tengku+Anis+Kota+Bharu+Kelantan',
+  'Mini Stadium Kijang Emas':'https://www.google.com/maps/search/?api=1&query=Mini+Stadium+Kijang+Emas+Kelantan',
+  'DK 15–19':'https://www.google.com/maps/search/?api=1&query=Faculty+of+Veterinary+Medicine+Universiti+Malaysia+Kelantan+Pengkalan+Chepa',
+  'Stadium Hoki USM':'https://www.google.com/maps/search/?api=1&query=Kopa+Arena+Kelantan+Kampus+Kubang+Kerian+USM'
+};
+const scheduleLocationMarkup = (location, fallbackTag='h3') => {
+  const label = String(location ?? '');
+  const url = scheduleVenueUrls[label.trim().replace(/\\s+/g,' ')];
+  if (!url) return `<${fallbackTag} class="schedule-location">${safe(label)}</${fallbackTag}>`;
+  return `<a class="schedule-location schedule-location-link" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="Open ${safe(label)} in Google Maps">${safe(label)}<span class="map-arrow" aria-hidden="true">↗</span></a>`;
+};
 const teamSlug = team => team.toLowerCase().replace(/[^a-z0-9]+/g,'-');
 let supabase=null,currentUser=null,isAdmin=false,selectedSport=sports[0],selectedTeam=teams[0],logos={};
 
@@ -1016,9 +1051,7 @@ async function loadPublicSchedule() {
 
       contents = locations.map(group => `
         <div class="schedule-session">
-          <h3 class="schedule-location">
-            ${safe(group.location)}
-          </h3>
+          ${scheduleLocationMarkup(group.location, 'h3')}
           <div class="schedule-timeline">
             ${group.items.map(item => `
               <div class="schedule-item">
@@ -1060,9 +1093,7 @@ async function loadPublicSchedule() {
           <h3 class="schedule-session-title">
             ${safe(group.session)}
           </h3>
-          <p class="schedule-location">
-            ${safe(group.location)}
-          </p>
+          ${scheduleLocationMarkup(group.location, 'p')}
           <div class="schedule-timeline">
             ${group.items.map(item => `
               <div class="schedule-item">
