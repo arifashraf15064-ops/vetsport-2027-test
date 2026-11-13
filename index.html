@@ -153,6 +153,11 @@ a{color:var(--lime)}header{position:sticky;top:0;z-index:10;background:#091321ed
 .sponsor-admin-actions{display:flex;gap:6px;flex-wrap:wrap}
 @media(max-width:520px){#sponsors .sectionhead{padding:22px 16px}.sponsor-tier{padding:15px}.sponsor-tier-heading{align-items:flex-start;flex-direction:column;gap:8px}.sponsor-card-diamond .sponsor-logo{width:120px;height:120px}.sponsor-grid-diamond{grid-template-columns:1fr}.sponsor-admin-item{align-items:flex-start;flex-wrap:wrap}}
 
+/* Keep Schedule and Sponsors out of the default Overview view */
+#schedule,
+#sponsors{display:none!important}
+#schedule:target,
+#sponsors:target{display:block!important}
 </style>
 </head>
 <body>
